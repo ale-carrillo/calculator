@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Calculator</string>
+    <string name="calculator_title">Calculator</string>
+    <string name="select_formula">Select a formula:</string>
+    <string name="formula_hint">Choose a formula</string>
+    <string name="general_formula">Quadratic Formula</string>
+    <string name="pythagoras">Pythagoras</string>
+    <string name="cylinder_area">Cylinder Area</string>
+    <string name="gravitation_law">Law of Gravitation</string>
+    <string name="value_a">Value A</string>
+    <string name="value_b">Value B</string>
+    <string name="value_c">Value C</string>
+    <string name="radius">Radius</string>
+    <string name="height">Height</string>
+    <string name="mass1">Mass 1</string>
+    <string name="mass2">Mass 2</string>
+    <string name="distance">Distance</string>
+    <string name="calculate">Calculate</string>
+    <string name="author">by Alejandra Carrillo</string>
+    <string name="invalid_number">Enter a valid number</string>
+    <string name="no_real_solution">No real solution</string>
+    <string name="cylinder_area_result">Area = %1$.2f</string>
+    <string name="formula_image_description">Imagen de la fórmula</string>
+    <string name="calculator_logo_description">Logo de la calculadora</string>
+    <string name="background_image_description">Imagen de fondo</string>
+
+
+</resources>

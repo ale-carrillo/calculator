@@ -1,3 +1,26 @@
 <resources>
-    <string name="app_name">Calculator</string>
+    <string name="app_name">Calculadora</string>
+    <string name="calculator_title">Calculadora</string>
+    <string name="select_formula">Selecciona una fórmula:</string>
+    <string name="formula_hint">Elige una fórmula</string>
+    <string name="general_formula">Fórmula General</string>
+    <string name="pythagoras">Pitágoras</string>
+    <string name="cylinder_area">Área de un Cilindro</string>
+    <string name="gravitation_law">Ley de la Gravitación</string>
+    <string name="value_a">Valor A</string>
+    <string name="value_b">Valor B</string>
+    <string name="value_c">Valor C</string>
+    <string name="radius">Radio</string>
+    <string name="height">Altura</string>
+    <string name="mass1">Masa 1</string>
+    <string name="mass2">Masa 2</string>
+    <string name="distance">Distancia</string>
+    <string name="calculate">Calcular</string>
+    <string name="author">por Alejandra Carrillo</string>
+    <string name="invalid_number">Introduce un número válido</string>
+    <string name="no_real_solution">No hay solución real</string>
+    <string name="cylinder_area_result">Área = %1$.2f</string>
+    <string name="formula_image_description">Formula image</string>
+    <string name="calculator_logo_description">Calculator logo</string>
+    <string name="background_image_description">Background image</string>
 </resources>

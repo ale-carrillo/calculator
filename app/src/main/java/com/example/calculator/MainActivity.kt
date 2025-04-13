@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.calculator.ui.theme.CalculatorTheme
 import kotlin.math.sqrt
+import androidx.compose.ui.res.stringResource
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +40,13 @@ data class Campo(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
-    val formulas = listOf("Formula General", "Pitágoras", "Área de un cilindro", "Ley de Gravitación")
+    val formulas = listOf(
+        R.string.general_formula,
+        R.string.pythagoras,
+        R.string.cylinder_area,
+        R.string.gravitation_law
+    )
+
     var expanded by remember { mutableStateOf(false) }
     var selectedFormula by remember { mutableStateOf(formulas[0]) }
 
@@ -48,29 +55,30 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var campoC by remember { mutableStateOf(Campo()) }
     var result by remember { mutableStateOf("") }
     var mostrarResultado by remember { mutableStateOf(false) }
-
+    val noSolutionText = stringResource(R.string.no_real_solution)
+    val areaFormat = stringResource(id = R.string.cylinder_area_result)
 
     fun validarCampo(campo: Campo): Boolean {
         return campo.valor.isNotEmpty() && campo.valor.toFloatOrNull() != null
     }
 
-    fun obtenerImagenSegunFormula(formula: String): Int {
+    fun obtenerImagenSegunFormula(formula: Int): Int {
         return when (formula) {
-            "Formula General" -> R.drawable.formulageneral2
-            "Pitágoras" -> R.drawable.pitagoras
-            "Área de un cilindro" -> R.drawable.cilindro
-            "Ley de Gravitación" -> R.drawable.universal
+            R.string.general_formula -> R.drawable.formulageneral2
+            R.string.pythagoras -> R.drawable.pitagoras
+            R.string.cylinder_area -> R.drawable.cilindro
+            R.string.gravitation_law -> R.drawable.universal
             else -> R.drawable.backg
         }
     }
 
-    fun calcular() {
+    fun calcular(noSolutionText: String, areaFormat: String) {
         campoA = campoA.copy(error = false)
         campoB = campoB.copy(error = false)
         campoC = campoC.copy(error = false)
 
         when (selectedFormula) {
-            "Formula General" -> {
+            R.string.general_formula -> {
                 val validoA = validarCampo(campoA)
                 val validoB = validarCampo(campoB)
                 val validoC = validarCampo(campoC)
@@ -85,7 +93,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     val c = campoC.valor.toFloat()
                     val d = b * b - 4 * a * c
                     result = if (d < 0) {
-                        "No hay solución real"
+                        noSolutionText
                     } else {
                         val x1 = (-b + sqrt(d)) / (2 * a)
                         val x2 = (-b - sqrt(d)) / (2 * a)
@@ -97,7 +105,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 }
             }
 
-            "Pitágoras" -> {
+            R.string.pythagoras -> {
                 val validoA = validarCampo(campoA)
                 val validoB = validarCampo(campoB)
                 campoA = campoA.copy(error = !validoA)
@@ -113,7 +121,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 }
             }
 
-            "Área de un cilindro" -> {
+            R.string.cylinder_area -> {
                 val validoR = validarCampo(campoA)
                 val validoH = validarCampo(campoB)
                 campoA = campoA.copy(error = !validoR)
@@ -122,14 +130,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 if (validoR && validoH) {
                     val r = campoA.valor.toFloat()
                     val h = campoB.valor.toFloat()
-                    result = "Área = ${2 * 3.1416 * r * (r + h)}"
+                    result = areaFormat.format(2 * 3.1416 * r * (r + h))
                     mostrarResultado = true
                 } else {
                     mostrarResultado = false
                 }
             }
 
-            "Ley de Gravitación" -> {
+            R.string.gravitation_law -> {
                 val validoM1 = validarCampo(campoA)
                 val validoM2 = validarCampo(campoB)
                 val validoD = validarCampo(campoC)
@@ -159,7 +167,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     ){
         Image(
             painter = painterResource(R.drawable.backg),
-            contentDescription = "Imagen de fondo",
+            contentDescription = stringResource(id = R.string.background_image_description),
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
@@ -173,14 +181,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     .wrapContentWidth(Alignment.CenterHorizontally)
             ) {
                 Text(
-                    text = "Calculadora",
+                    text = stringResource(id = R.string.calculator_title),
                     style = MaterialTheme.typography.headlineLarge,
                     color = Color.Black
                 )
                 Spacer(modifier = Modifier.width(30.dp))
                 Image(
                     painter = painterResource(id = R.drawable.simbolos),
-                    contentDescription = "Logo calculadora",
+                    contentDescription = stringResource(id = R.string.calculator_logo_description),
                     modifier = Modifier
                         .size(70.dp)
                         .padding(end = 8.dp)
@@ -188,7 +196,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             }
 
             Text(
-                "Selecciona una fórmula:",
+                stringResource(id = R.string.select_formula),
                 fontSize = 20.sp,
             )
 
@@ -200,10 +208,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     .padding(vertical = 4.dp)
             ) {
                 OutlinedTextField(
-                    value = selectedFormula,
+                    value = stringResource(id = selectedFormula),
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Selecciona una fórmula") },
+                    label = { Text(stringResource(id = R.string.formula_hint)) },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                     },
@@ -213,13 +221,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         focusedContainerColor = Color.White,
                     )
                 )
+
                 ExposedDropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false }
                 ) {
                     formulas.forEach { formula ->
                         DropdownMenuItem(
-                            text = { Text(formula) },
+                            text = { Text(stringResource(id = formula)) },
                             onClick = {
                                 selectedFormula = formula
                                 campoA = Campo()
@@ -235,8 +244,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
             Image(
                 painter = painterResource(id = obtenerImagenSegunFormula(selectedFormula)),
-                contentDescription = "Imagen de la fórmula",
-                modifier = Modifier
+                contentDescription = stringResource(id = R.string.formula_image_description),
+                        modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
                     .padding(vertical = 10.dp),
@@ -247,37 +256,37 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
             InputField(
                 label = when (selectedFormula) {
-                    "Área de un cilindro" -> "Radio"
-                    "Ley de Gravitación" -> "Masa 1"
-                    else -> "Valor A"
+                    R.string.cylinder_area -> stringResource(id = R.string.radius)
+                    R.string.gravitation_law -> stringResource(id = R.string.mass1)
+                    else -> stringResource(id = R.string.value_a)
                 },
                 campo = campoA,
                 onChange = { campoA = campoA.copy(valor = it) },
-                permitirNegativos = selectedFormula == "Formula General"
+                permitirNegativos = selectedFormula == R.string.general_formula
             )
 
-            if (selectedFormula in listOf("Formula General", "Pitágoras", "Área de un cilindro", "Ley de Gravitación")) {
+            if (selectedFormula in listOf(R.string.general_formula, R.string.pythagoras, R.string.cylinder_area, R.string.gravitation_law)) {
                 InputField(
                     label = when (selectedFormula) {
-                        "Área de un cilindro" -> "Altura"
-                        "Ley de Gravitación" -> "Masa 2"
-                        else -> "Valor B"
+                        R.string.cylinder_area -> stringResource(id = R.string.height)
+                        R.string.gravitation_law -> stringResource(id = R.string.mass2)
+                        else -> stringResource(id = R.string.value_b)
                     },
                     campo = campoB,
                     onChange = { campoB = campoB.copy(valor = it) },
-                    permitirNegativos = selectedFormula == "Formula General"
+                    permitirNegativos = selectedFormula == R.string.general_formula
                 )
             }
 
-            if (selectedFormula in listOf("Formula General", "Ley de Gravitación")) {
+            if (selectedFormula in listOf(R.string.general_formula, R.string.gravitation_law)) {
                 InputField(
                     label = when (selectedFormula) {
-                        "Ley de Gravitación" -> "Distancia"
-                        else -> "Valor C"
+                        R.string.gravitation_law -> stringResource(id = R.string.distance)
+                        else -> stringResource(id = R.string.value_c)
                     },
                     campo = campoC,
                     onChange = { campoC = campoC.copy(valor = it) },
-                    permitirNegativos = selectedFormula == "Formula General"
+                    permitirNegativos = selectedFormula == R.string.general_formula
                 )
             }
 
@@ -291,20 +300,19 @@ fun MainScreen(modifier: Modifier = Modifier) {
             }
 
             Button(
-                onClick = { calcular() },
+                onClick = { calcular(noSolutionText, areaFormat) },
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .fillMaxWidth()
             ) {
-                Text("Calcular")
+                Text(stringResource(id = R.string.calculate))
             }
 
             Text(
-                "by Alejandra Carrillo",
+                text = stringResource(id = R.string.author),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Blue,
-                modifier = Modifier
-                    .padding(top = 16.dp)
+                modifier = Modifier.padding(top = 16.dp)
             )
 
         }
@@ -339,7 +347,7 @@ fun InputField(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         supportingText = {
             if (campo.error) {
-                Text("Ingresa un número válido", color = MaterialTheme.colorScheme.error)
+                Text(stringResource(id = R.string.invalid_number), color = MaterialTheme.colorScheme.error)
             }
         },
         colors = OutlinedTextFieldDefaults.colors(
